@@ -33,8 +33,8 @@ namespace restaurant.Controllers
         }
 
 
-        [HttpPut]
-        public async Task<ActionResult<List<RestoList>>> UpdateRestoList(RestoList details)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<RestoList>>> UpdateRestoList(RestoList details, int id)
         {
             var dbresto= await _context.Listresto.FindAsync(details.Id);
             if (dbresto == null)
@@ -62,6 +62,26 @@ namespace restaurant.Controllers
 
             return Ok(await _context.Listresto.ToListAsync());
         }
+
+     
+
+       
+
+        [HttpGet("{id}")]
+
+        public async Task<ActionResult<RestoList>> EditRestoList(int id)
+        {
+            var dbresto = await _context.Listresto.FindAsync(id);
+
+            /* return Ok(await _context.Listresto.ToListAsync());*/
+
+            return (dbresto);
+        }
+
+
+
+
+
 
     }
 }
