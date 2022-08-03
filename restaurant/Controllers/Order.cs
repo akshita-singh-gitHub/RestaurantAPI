@@ -36,5 +36,17 @@ namespace restaurant.Controllers
         }
 
 
+        [HttpGet("{id}")]
+
+        public async Task<ActionResult<Orders>> getOrderById(int id)
+        {
+            var dbresto = await _context.OrderList.FindAsync(id);
+
+            /* return Ok(await _context.Listresto.ToListAsync());*/
+
+            return dbresto;
+        }
+
+
     }
 }

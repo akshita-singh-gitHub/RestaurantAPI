@@ -75,7 +75,7 @@ namespace restaurant.Controllers
 
             /* return Ok(await _context.Listresto.ToListAsync());*/
 
-            return (dbresto);
+            return dbresto;
         }
 
 

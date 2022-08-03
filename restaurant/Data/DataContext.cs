@@ -8,12 +8,12 @@ namespace restaurant.Data
         public DbSet<RestoList> Listresto => Set<RestoList>() ;
 
         public DbSet<Orders> OrderList => Set<Orders>();
+        public DbSet<FoodDetail> RestoMenu => Set<FoodDetail>();
+        public DbSet<UserDb> UserList => Set<UserDb>();
+        public DbSet<CartDb> CartList => Set<CartDb>();
 
 
-       /* internal Task EditRestoListAsync(int id)
-        {
-            throw new NotImplementedException();
-        }*/
+      
     } 
     
 }
