@@ -10,9 +10,9 @@ namespace restaurant.Controllers
     [ApiController]
     public class UserController: ControllerBase
     {
-        private readonly DataContext _context;
+        private  IUserData _context;
 
-        public UserController(DataContext context)
+        public UserController(IUserData context)
         {
             _context = context;
         }
@@ -20,8 +20,7 @@ namespace restaurant.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<List<UserDb>>> RegisterUser(UserDb details)
         {
-            _context.UserList.Add(details);
-            await _context.SaveChangesAsync();
+            _context.RegisterUser(details);
 
             //return Ok(await _context.UserList.ToListAsync());
             return Ok("User Registered");
@@ -31,9 +30,9 @@ namespace restaurant.Controllers
 
         [HttpPost]
 
-        public IActionResult GetLoginUser(UserDb data)
+        public  IActionResult GetLoginUser(UserDb data)
         {
-            var FindUser = _context.UserList.SingleOrDefault(x => x.Email == data.Email && x.Password == data.Password);
+            var FindUser = _context.GetLoginUser(data);
             if (FindUser != null)
                 return Ok(FindUser);
             else
@@ -44,14 +43,8 @@ namespace restaurant.Controllers
 
         public async Task<ActionResult<List<UserDb>>> DeleteUser(int id)
         {
-            var user = await _context.UserList.FindAsync(id);
-            if (user == null)
-                return BadRequest("not found");
-
-            _context.UserList.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.UserList.ToListAsync());
+    
+            return Ok(  _context.DeleteUser(id));
         }
 
     }
