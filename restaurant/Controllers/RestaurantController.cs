@@ -9,9 +9,9 @@ namespace restaurant.Controllers
     [ApiController]
     public class RestaurantController : ControllerBase
     {
-        private readonly DataContext _context;
+        private  IRestoListData _context;
 
-        public RestaurantController(DataContext context)
+        public RestaurantController(IRestoListData context)
         {
             _context = context;
         }
@@ -19,16 +19,15 @@ namespace restaurant.Controllers
          
         public async Task<ActionResult<List<RestoList>>> GetRestoList()
         {
-            return Ok(await _context.Listresto.ToListAsync());
+            return Ok(_context.GetRestoList());
         }
 
       [HttpPost]
         public async Task<ActionResult<List<RestoList>>> CreateRestoList(RestoList details)
         {
-             _context.Listresto.Add(details);
-            await _context.SaveChangesAsync();
 
-            return Ok(await _context.Listresto.ToListAsync());
+
+            return Ok( _context.CreateRestoList(details));
 
         }
 
@@ -36,49 +35,45 @@ namespace restaurant.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<List<RestoList>>> UpdateRestoList(RestoList details, int id)
         {
-            var dbresto= await _context.Listresto.FindAsync(details.Id);
-            if (dbresto == null)
-                return BadRequest("not found");
+        
 
-            dbresto.Name = details.Name;
-            dbresto.Email = details.Email;
-            dbresto.Address = details.Address;
+            return Ok(  _context.UpdateRestoList( details,  id));
 
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Listresto.ToListAsync());
 
         }
         [HttpDelete("{id}")]
 
         public async Task<ActionResult<List<RestoList>>> DeleteRestoList(int id)
         {
-            var dbresto = await _context.Listresto.FindAsync(id);
+            var dbresto =  _context.GetRestoById( id);
             if (dbresto == null)
                 return BadRequest("not found");
+            else
+            {
+                _context.DeleteRestoList(dbresto);
+                return Ok(dbresto);
+            }
+            
 
-            _context.Listresto.Remove(dbresto);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Listresto.ToListAsync());
+            
         }
-
-     
-
-       
 
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<RestoList>> EditRestoList(int id)
+        public async Task<ActionResult<RestoList>> GetRestoById(int id)
         {
-            var dbresto = await _context.Listresto.FindAsync(id);
-
-            /* return Ok(await _context.Listresto.ToListAsync());*/
-
-            return dbresto;
+            return Ok(_context.GetRestoById(id));
         }
 
+        //[HttpPut("[action]")]
+        //public IActionResult SetRestoAvailability(int id)
+        //{
+        //    var resto = _context.GetRestoById(id);
 
+        //    _context.SetAvailability(resto);
+        //    return Ok();
+
+        //}
 
 
 

@@ -18,7 +18,7 @@ namespace restaurant.Migrations
                    
                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                   Favourite = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                   Available = table.Column<string>(type: "nvarchar(max)", nullable: false),
                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                },
                constraints: table =>

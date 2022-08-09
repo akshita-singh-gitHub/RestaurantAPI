@@ -20,7 +20,8 @@ namespace restaurant.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     CookTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Available = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

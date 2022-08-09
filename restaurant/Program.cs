@@ -6,9 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IUserData,UserFunc>();
+builder.Services.AddScoped<IRestoListData, RestoListFunc>();
+builder.Services.AddScoped<IUserData, UserFunc>();
+builder.Services.AddScoped<ICartData, CartFunc>();
+builder.Services.AddScoped<IMenuData, MenuFunc>();
+
 builder.Services.AddDbContextPool<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

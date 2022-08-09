@@ -21,7 +21,8 @@ namespace restaurant.Migrations
                         
                     
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CartItems = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CartItems = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderHistory = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

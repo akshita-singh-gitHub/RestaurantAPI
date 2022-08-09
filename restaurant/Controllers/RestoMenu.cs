@@ -9,9 +9,9 @@ namespace restaurant.Controllers
     [ApiController]
     public class RestoMenu : ControllerBase
     {
-        private readonly DataContext _context;
+        private IMenuData _context;
 
-        public RestoMenu(DataContext context)
+        public RestoMenu(IMenuData context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace restaurant.Controllers
 
         public async Task<ActionResult<List<FoodDetail>>> GetMenuList()
         {
-            return Ok(await _context.RestoMenu.ToListAsync());
+            return Ok(_context.GetMenuList());
         }
 
      
@@ -30,11 +30,7 @@ namespace restaurant.Controllers
 
         public async Task<ActionResult<FoodDetail>> getFoodById(int id)
         {
-            var dbresto = await _context.RestoMenu.FindAsync(id);
-
-            /* return Ok(await _context.Listresto.ToListAsync());*/
-
-            return dbresto;
+            return Ok(_context.getFoodById(id));
         }
 
 
@@ -45,36 +41,65 @@ namespace restaurant.Controllers
         [HttpGet("[action]/{restaurant}")]
         public IActionResult GetRestoByName(string restaurant)
         {
-            
-            var resto = _context.RestoMenu.Where(x => x.Restaurant==restaurant).ToList();
-            return Ok(resto);
+
+            return Ok(_context.GetRestoByName(restaurant));
         } 
+
         
         [HttpPost("[action]")]
         public IActionResult GetFoodDetail(string[] CartArray)
         {
-           
-           List <FoodDetail> UserCart = new List<FoodDetail>();
-            for (int i=0; i<CartArray.Length;i++)
-            {
-               var  item = _context.RestoMenu.Where(x => x.Name == CartArray[i]).FirstOrDefault();
-
-                UserCart.Add(item);
 
 
-            }
-            return Ok(UserCart);
+            return Ok(_context.GetFoodDetail(CartArray));
         }
 
         [HttpGet("[action]/{Tag}")]
         public IActionResult GetFoodByTag(string Tag)
         {
+            return Ok(_context.GetFoodByTag(Tag));
 
-            var item = _context.RestoMenu.Where(x => x.Tag == Tag).ToList();
-            return Ok(item);
+        }
+        [HttpPut("[action]/{id}")]
+        public async Task<ActionResult<List<FoodDetail>>> UpdateFoodItem(FoodDetail details, int id)
+        {
+
+
+            return Ok(_context.UpdateFoodItem(details, id));
+
+
         }
 
+        [HttpPut("[action]")]
+        public IActionResult SetFoodAvailability(int  id)
+        {
+           var Food= _context.getFoodById(id);
 
+            _context.SetFoodAvailability(Food);
+            return Ok();
+
+        }
+        [HttpDelete("{id}")]
+
+        public async Task<ActionResult<List<FoodDetail>>> DeleteRestoList(int id)
+        {
+            var Food = _context.getFoodById(id);
+            if (Food == null)
+                return BadRequest("not found");
+            else
+            {
+                _context.DeleteFoodItem(Food);
+                return Ok(Food);
+            }
+
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<List<FoodDetail>>> AddFoodItem(FoodDetail details)
+        {
+            return Ok(_context.AddFoodItem(details));
+
+        }
 
 
     }
