@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRestoListData, RestoListFunc>();
-builder.Services.AddScoped<IUserData, UserFunc>();
+//builder.Services.AddScoped<IUserData, UserFunc>();
 builder.Services.AddScoped<ICartData, CartFunc>();
 builder.Services.AddScoped<IMenuData, MenuFunc>();
 
