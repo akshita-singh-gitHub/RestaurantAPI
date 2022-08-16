@@ -15,26 +15,31 @@ namespace restaurant.Controllers
     public class UserController: ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly DataContext _context;
 
-        public UserController(IConfiguration configuration)
+        public UserController(IConfiguration configuration,DataContext context)
         {
             _configuration = configuration;
+            _context = context;
+
         }
 
         public static UserDb user = new UserDb();
 
         [HttpPost("register")]
-        public async Task<ActionResult<List<UserDb>>> RegisterUser(UserDto request)
+        public async Task<ActionResult<List<UserDb>>> RegisterUser(UserDto request, string Name, string Role)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-
+            user.Name = Name;
+            user.Role = Role;
             user.Email = request.Email;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
             //_context.RegisterUser(details);
+            _context.UserList.Add(user);
 
-            
+            await _context.SaveChangesAsync();
             return Ok(user);
 
         }
@@ -44,17 +49,18 @@ namespace restaurant.Controllers
         public async Task<ActionResult<List<string>>> Login(UserDto request)
 
         {
-            if (user.Email != request.Email)
+            var LoginUser = _context.UserList.SingleOrDefault(x => x.Email == request.Email);
+            if (LoginUser.Email != request.Email)
             {
                 return BadRequest("User not found");
             }
-            if(!VerifyPasswordHash(request.Password,user.PasswordHash,user.PasswordSalt))
+            if(!VerifyPasswordHash(request.Password, LoginUser.PasswordHash, LoginUser.PasswordSalt))
             {
                 return BadRequest("Wrong password");
             }
 
-            string token = CreateToken(user);
-            return Ok(token);
+            string token = CreateToken(LoginUser);
+            return Ok(LoginUser);
 
             //var FindUser = _context.GetLoginUser(data);
             //if (FindUser != null)
@@ -68,9 +74,10 @@ namespace restaurant.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
+                 new Claim(ClaimTypes.Role, "Admin")
             };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettingsa:Token").Value));
+                _configuration.GetSection("AppSettings:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(

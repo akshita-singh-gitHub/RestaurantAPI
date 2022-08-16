@@ -36,9 +36,20 @@ namespace restaurant.Controllers
 
 
 
+        //[Route("RestoOwner")]
+        //[HttpGet("[action]/{restaurant}")]
 
 
+        //public IActionResult GetRestoByName(string restaurant)
+        //{
+
+        //    return Ok(_context.GetRestoByName(restaurant));
+        //}
+
+        
         [HttpGet("[action]/{restaurant}")]
+
+
         public IActionResult GetRestoByName(string restaurant)
         {
 
