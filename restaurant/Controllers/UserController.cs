@@ -29,7 +29,7 @@ namespace restaurant.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<List<UserDb>>> RegisterUser(UserDto request, string Name, string Role)
         {
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            CreatePasswordHash(request.Password,out byte[] passwordHash, out byte[] passwordSalt);
             user.Name = Name;
             user.Role = Role;
             user.Email = request.Email;

@@ -12,26 +12,50 @@ namespace restaurant.Controllers
     {
 
         private readonly DataContext _context;
+        //private readonly RestoMenu menu;
+        
 
-        public Order(DataContext context)
+        public Order(DataContext context )
         {
             _context = context;
+            //this.menu = menu;
         }
+
 
         [HttpGet]     
 
         public async Task<ActionResult<List<Orders>>> GetOrderList()
         {
-            return Ok(await _context.OrderList.ToListAsync());
+            return Ok( _context.OrderList.ToList());
         }
 
-        [HttpPost]
-        public async Task<ActionResult<List<Orders>>> CreateOrderList(Orders details)
+        [HttpPost("[action]")]
+        public IActionResult PlaceOrder(OrderDto details)
         {
-            _context.OrderList.Add(details);
-            await _context.SaveChangesAsync();
+            Orders  order = new Orders();
+            var OrderArr = details.Order.Split(',');
+            RestoMenu restoMenu = new RestoMenu();
+            //RestoMenu.GetFoodDetail(OrderArr);
+            //return  RedirectToAction("GetFoodDetail(details.Order)", "RestoMenu");
 
-            return Ok(await _context.OrderList.ToListAsync());
+
+            //return Ok(menu.GetFoodDetail(OrderArr));
+
+
+            //DateTime datetime = DateTime.Now;
+            //order.Datetime = datetime;
+            //order.CustomerName = details.CustomerName;
+            //order.Restaurant = details.Restaurant;
+            ////order.Order = details.Order;
+            //order.Status = "pending";
+            //order.Address = details.Address;
+            //_context.OrderList.Add(order);
+
+            //_context.SaveChanges();
+
+
+            //return Ok(_context.OrderList.ToList());
+            return Ok(order);
 
         }
 
