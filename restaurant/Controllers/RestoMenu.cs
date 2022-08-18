@@ -9,7 +9,7 @@ namespace restaurant.Controllers
     [ApiController]
     public class RestoMenu : ControllerBase
     {
-        private IMenuData _context;
+        public IMenuData _context;
 
         public RestoMenu(IMenuData context)
         {
