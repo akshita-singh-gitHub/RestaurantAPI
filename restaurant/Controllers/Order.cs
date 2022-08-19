@@ -23,7 +23,7 @@ namespace restaurant.Controllers
         }
 
 
-        [HttpGet]     
+        [HttpGet("[action]")]
 
         public async Task<ActionResult<List<Orders>>> GetOrderList()
         {
@@ -63,22 +63,22 @@ namespace restaurant.Controllers
 
         }
 
-        //[HttpGet("[action]/{restaurant}")]
-        //public IActionResult GetOrderByResto(string restaurant)
-        //{
-        //    var resto = _context.OrderList.Where(x => x.Restaurant == restaurant).ToList();
-            
-        //    return Ok(resto);
-        //}
+        [HttpGet("[action]/{restaurant}")]
+        public IActionResult GetOrderByResto(string restaurant)
+        {
+            var resto = _context.OrderList.Where(x => x.Restaurant == restaurant).ToList();
+
+            return Ok(resto);
+        }
 
 
-        //[HttpGet("[action]/{restaurant}")]
-        //public IActionResult GetOrderByStatus(string restaurant)
-        //{
-        //    var resto = _context.OrderList.Where(x => x.Restaurant == restaurant && x.Status=="pending").ToList();
+        [HttpGet("[action]/{restaurant}")]
+        public IActionResult GetOrderByStatus(string restaurant)
+        {
+            var resto = _context.OrderList.Where(x => x.Restaurant == restaurant && x.Status == "pending").ToList();
 
-        //    return Ok(resto);
-        //}
+            return Ok(resto);
+        }
 
 
         [HttpGet("{id}")]
@@ -92,6 +92,20 @@ namespace restaurant.Controllers
             return dbresto;
         }
 
+
+        [HttpPut("[action]")]
+        public IActionResult SetOrderStatus(int id)
+        {
+            var order = _context.OrderList.Find(id);
+
+            if (order.Status == "pending")
+                order.Status = "completed";
+            else order.Status = "pending";
+            _context.SaveChanges();
+
+            return Ok();
+
+        }
 
     }
 }
