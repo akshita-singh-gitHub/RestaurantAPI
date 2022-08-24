@@ -69,6 +69,18 @@ namespace restaurant.Controllers
             //    return Ok("User Not Found");
         }
 
+        [HttpDelete("{id}")]
+
+        public async Task<ActionResult<UserDb>> DeleteUserAccount(int id)
+        {
+            var user = await _context.UserList.FindAsync(id);
+            _context.UserList.Remove(user);
+
+            /* return Ok(await _context.Listresto.ToListAsync());*/
+
+            return Ok();
+        }
+
         private string CreateToken(UserDb user)
         {
             List<Claim> claims = new List<Claim>

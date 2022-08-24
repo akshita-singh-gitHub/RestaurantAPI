@@ -22,7 +22,7 @@
             
             _context.SaveChanges();
 
-            return "Removed";
+            return "" ;
         }
         public String ModifyCartItems(CartDb Cart)
         {
@@ -35,57 +35,33 @@
         }
 
 
-        //public String AddCartItem(CartDb cart, string item)
-        //{
+        public CartDb AddCartItem(int userId, string customerName , int foodId)
+        {
 
-        //    List<CartDb> cart = new List<CartDb>();
-        //    MenuFunc menuFunc = new MenuFunc(_context);
-        //    OrderDetail = menuFunc.GetFoodDetail(item);
-        //    for (int i = 0; i < OrderArr.Length; i++)
-        //    {
-        //        Orders order = new Orders();
+            FoodDetail foodItem = new FoodDetail();
+            MenuFunc menuFunc = new MenuFunc(_context);
+            foodItem = menuFunc.getFoodById(foodId);
+            
+                CartDb cart = new CartDb();
 
-        //        DateTime datetime = DateTime.Now;
-        //        order.Datetime = datetime;
-        //        order.CustomerName = details.CustomerName;
-        //        order.UserId = UserId;
-        //        order.Restaurant = OrderDetail[i].Restaurant;
-        //        order.Order = OrderDetail[i].Name;
-        //        order.Price = OrderDetail[i].Price;
-        //        order.imageUrl = OrderDetail[i].ImageUrl;
-        //        order.Status = "pending";
-        //        order.Address = details.Address;
-        //        _context.OrderList.Add(order);
+               
+                cart.CustomerName = customerName;
+                cart.UserId = userId;
+                cart.Restaurant = foodItem.Restaurant;
+            cart.ImageUrl = foodItem.ImageUrl;
+            cart.CartItems = foodItem.Name;
+            cart.Price = foodItem.Price;
 
-        //        _context.SaveChanges();
-        //    }
-        //    if (cart.CartItems == null)
-        //        cart.CartItems = item;
-        //    else
-        //        cart.CartItems = cart.CartItems.Insert(0, item + ",");
+            _context.CartList.Add(cart);
 
-        //    _context.SaveChanges();
+                _context.SaveChanges();
+            
+        
 
-        //    return cart.CartItems;
-        //}
+            return cart;
+        }
 
 
-        //public List<CartDb> DeleteUserCart(CartDb user)
-        //{
-        //    _context.CartList.Remove(user);
-        //     _context.SaveChanges();
-        //    return  _context.CartList.ToList();
-        //}
-        //public CartDb CreateUserCart(CartDb details)
-        //{
-        //  _context.CartList.Add(details);
-        //     _context.SaveChanges();
-        //    var cart = _context.CartList.Find(details.Id);
-        //    cart.CartItems = null;
-        //     _context.SaveChanges();
-
-        //    return cart;
-        //}
 
     }
 }

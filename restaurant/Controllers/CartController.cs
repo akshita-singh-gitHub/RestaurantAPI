@@ -27,7 +27,7 @@ namespace restaurant.Controllers
 
 
         [HttpPut("[action]/{UserId}")]
-        public async Task<ActionResult<List<CartDb>>> EmptyCartList(int UserId)
+        public IActionResult EmptyCartList(int UserId)
         {
             List<CartDb> cart = new List<CartDb>();
              cart= _context.GetUserCartItems(UserId);
@@ -50,40 +50,17 @@ namespace restaurant.Controllers
 
 
 
-        //[HttpPut("[action]/{id}")]
-        //public async Task<ActionResult<List<CartDb>>> AddCartItem(UserDb user , string item)
-        //{
-         
-
-        //    return Ok("Ok");
-
-        //    return Ok(_context.AddCartItem(cart, item));
-
-        //}
+        [HttpPut("[action]")]
+        public async Task<ActionResult<List<CartDb>>> AddCartItem(int userId, string customerName, int foodId)
+        {
 
 
-        //[HttpDelete("{id}")]
+            
 
-        //public async Task<ActionResult<List<CartDb>>> DeleteUserCart(int id)
-        //{
-        //    var user = _context.GetUserCartItems(id);
-        //    if (user == null)
-        //        return BadRequest("not found");
+            return Ok(_context.AddCartItem(userId, customerName, foodId));
+
+        }
 
 
-
-        //    return Ok(_context.DeleteUserCart(user));
-        //}
-
-
-
-        //[HttpPost]
-        //public async Task<ActionResult<List<CartDb>>> CreateUserCart(CartDb details)
-        //{
-
-        //    return Ok(_context.CreateUserCart(details));
-
-
-        //}
     }
 }

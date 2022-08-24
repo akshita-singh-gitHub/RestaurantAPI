@@ -24,11 +24,9 @@
         List<CartDb> GetUserCartItems(int UserId);
         String EmptyCartList(List<CartDb> cart);
         String ModifyCartItems(CartDb Cart);
-       
-        //String AddCartItem(CartDb cart, string item);
-        //List<CartDb> DeleteUserCart(CartDb user);
-        //CartDb CreateUserCart(CartDb details);
 
+        CartDb AddCartItem(int userId, string customerName, int foodId);
+  
 
 
     }
