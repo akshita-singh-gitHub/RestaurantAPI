@@ -31,7 +31,7 @@ namespace restaurant.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult PlaceOrder(OrderDto details)
+        public IActionResult PlaceOrder(OrderDto details, int UserId )
         {
             List<FoodDetail> OrderDetail = new List<FoodDetail>();
 
@@ -47,9 +47,11 @@ namespace restaurant.Controllers
                 DateTime datetime = DateTime.Now;
                 order.Datetime = datetime;
                 order.CustomerName = details.CustomerName;
+                order.UserId = UserId;
                 order.Restaurant = OrderDetail[i].Restaurant;
                 order.Order = OrderDetail[i].Name;
                 order.Price = OrderDetail[i].Price;
+                order.imageUrl = OrderDetail[i].ImageUrl;
                 order.Status = "pending";
                 order.Address = details.Address;
                 _context.OrderList.Add(order);
@@ -71,6 +73,14 @@ namespace restaurant.Controllers
             return Ok(resto);
         }
 
+
+        [HttpGet("[action]/{customerName}")]
+        public IActionResult GetOrderByCustomer(string customerName)
+        {
+            var resto = _context.OrderList.Where(x => x.CustomerName == customerName).ToList();
+
+            return Ok(resto);
+        }
 
         [HttpGet("[action]/{restaurant}")]
         public IActionResult GetOrderByStatus(string restaurant)

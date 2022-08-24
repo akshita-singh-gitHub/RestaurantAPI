@@ -21,13 +21,13 @@
 
     public interface ICartData
     {
-        CartDb GetUserCartItems(int Id);
-        String EmptyCartList(CartDb cart);
-        String ModifyCartItems(CartDb cart, string item);
-        String SaveOrder(CartDb cart, string item);
-        String AddCartItem(CartDb cart, string item);
-        List<CartDb> DeleteUserCart(CartDb user);
-        CartDb CreateUserCart(CartDb details);
+        List<CartDb> GetUserCartItems(int UserId);
+        String EmptyCartList(List<CartDb> cart);
+        String ModifyCartItems(CartDb Cart);
+       
+        //String AddCartItem(CartDb cart, string item);
+        //List<CartDb> DeleteUserCart(CartDb user);
+        //CartDb CreateUserCart(CartDb details);
 
 
 

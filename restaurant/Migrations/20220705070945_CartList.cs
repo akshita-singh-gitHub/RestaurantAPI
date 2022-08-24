@@ -17,12 +17,13 @@ namespace restaurant.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
 
-                    //UserId = table.Column<int>(type: "int", nullable: false),
-                        
-                    
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: true),
+
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CartItems = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderHistory = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Restaurant = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
