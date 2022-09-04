@@ -25,6 +25,7 @@ namespace restaurant.Controllers
         }
 
         public static UserDb user = new UserDb();
+        public static LoginUserDto loginUserDto = new LoginUserDto();
 
         [HttpPost("register")]
         public async Task<ActionResult<List<UserDb>>> RegisterUser(UserDto request, string Name, string Role)
@@ -36,11 +37,14 @@ namespace restaurant.Controllers
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            string token = CreateToken(user);
+            user.Token = token;
+
             //_context.RegisterUser(details);
             _context.UserList.Add(user);
 
             await _context.SaveChangesAsync();
-            return Ok(user);
+            return Ok(user.Token);
 
         }
 
@@ -49,6 +53,9 @@ namespace restaurant.Controllers
         public async Task<ActionResult<List<string>>> Login(UserDto request)
 
         {
+               
+            AuthUser authUser = new AuthUser();
+
             var LoginUser = _context.UserList.SingleOrDefault(x => x.Email == request.Email);
             if (LoginUser.Email != request.Email)
             {
@@ -59,14 +66,30 @@ namespace restaurant.Controllers
                 return BadRequest("Wrong password");
             }
 
-            string token = CreateToken(LoginUser);
-            return Ok(LoginUser);
+           
+         
+            authUser.Token = LoginUser.Token;
+            authUser.Email = LoginUser.Email;
+            return Ok(authUser);
 
-            //var FindUser = _context.GetLoginUser(data);
-            //if (FindUser != null)
-            //    return Ok(FindUser);
-            //else
-            //    return Ok("User Not Found");
+       
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<List<string>>> UserInfo(AuthUser authUser)
+
+        {
+            LoginUserDto loginUserDto = new LoginUserDto();
+
+            var User = _context.UserList.SingleOrDefault(x => x.Email == authUser.Email && x.Token==authUser.Token);
+           
+
+            loginUserDto.Id = User.Id;
+            loginUserDto.Name = User.Name;
+            loginUserDto.Role = User.Role;
+            return Ok(loginUserDto);
+
+
         }
 
         [HttpDelete("{id}")]
