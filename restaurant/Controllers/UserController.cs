@@ -47,7 +47,7 @@ namespace restaurant.Controllers
             return Ok(user.Token);
 
         }
-
+ 
 
         [HttpPost("login")]
         public async Task<ActionResult<List<string>>> Login(UserDto request)
@@ -99,6 +99,7 @@ namespace restaurant.Controllers
             var user = await _context.UserList.FindAsync(id);
             _context.UserList.Remove(user);
 
+            await _context.SaveChangesAsync();
             /* return Ok(await _context.Listresto.ToListAsync());*/
 
             return Ok();
@@ -125,13 +126,7 @@ namespace restaurant.Controllers
             return jwt;
         }
 
-        //[HttpDelete("{id}")]
-
-        //public async Task<ActionResult<List<UserDb>>> DeleteUser(int id)
-        //{
-
-        //    return Ok(  _context.DeleteUser(id));
-        //}
+    
 
         private void CreatePasswordHash(string password, out byte[] passwordHash , out byte[] passwordSalt)
         {
